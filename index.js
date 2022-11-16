@@ -1,15 +1,20 @@
 import key from "./key.js";
 
+// Data variables:
 let cityWeather;
 let main;
+let temperature;
 let visibility;
 let snoh;
 let windSpeed;
 let clouds;
 
-let city = "";
+// Input variables:
+const form = document.querySelector("form");
+let city;
+let units;
 
-city = "Tucson";
+// city = "Tucson";
 //"Ittoqqortoormiit"
 // weather (object)
 //     - main (temp, etc)
@@ -17,28 +22,31 @@ city = "Tucson";
 //     -wind speed
 //     - rain
 //     -clouds
+function handleInput(e) {
+  e.preventDefault();
+  city = e.target.querySelector("input").value;
+  console.log(city);
 
-fetch(
-  `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${key}`,
-  { mode: "cors" }
-)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (response) {
-    storeMyResponse(response);
-  });
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${key}&units=${units}`,
+    { mode: "cors" }
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(storeMyResponse);
+}
 
 function storeMyResponse(response) {
+  console.log(response);
   cityWeather = response.weather;
   main = response.main;
   visibility = response.visibility;
   windSpeed = response.wind.speed;
-  snoh = handlePercipitation(response);
-  console.log(snoh);
+  snoh = handlePrecipitation(response);
 }
 
-function handlePercipitation(response) {
+function handlePrecipitation(response) {
   if (response.rain) {
     return response.rain;
   }
@@ -49,7 +57,15 @@ function handlePercipitation(response) {
   return { "1hr": 0 };
 }
 
+function handleTemperature(response) {
+  temperature = main.temp;
+}
+
+// function handleWeather(response)
+
 console.log("first!");
+// Event Listeners:
+form.addEventListener("submit", handleInput);
 
 // const testData = {
 //   coord: {
