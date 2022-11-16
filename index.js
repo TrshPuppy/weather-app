@@ -1,6 +1,9 @@
+import key from "./key.js";
+
 let cityWeater;
 let city = "";
-let key = "";
+
+city = "Canberra";
 
 fetch(
   `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${key}`,
@@ -9,7 +12,9 @@ fetch(
   .then(function (response) {
     return response.json();
   })
-  .then(function (response) {});
+  .then(function (response) {
+    cityWeater = response.weather;
+  });
 
 console.log(cityWeather);
 
