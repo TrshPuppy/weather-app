@@ -1,9 +1,22 @@
 import key from "./key.js";
 
-let cityWeater;
+let cityWeather;
+let main;
+let visibility;
+let snoh;
+let windSpeed;
+let clouds;
+
 let city = "";
 
-city = "Canberra";
+city = "Tucson";
+//"Ittoqqortoormiit"
+// weather (object)
+//     - main (temp, etc)
+//     -visibility
+//     -wind speed
+//     - rain
+//     -clouds
 
 fetch(
   `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${key}`,
@@ -13,10 +26,30 @@ fetch(
     return response.json();
   })
   .then(function (response) {
-    cityWeater = response.weather;
+    storeMyResponse(response);
   });
 
-console.log(cityWeather);
+function storeMyResponse(response) {
+  cityWeather = response.weather;
+  main = response.main;
+  visibility = response.visibility;
+  windSpeed = response.wind.speed;
+  snoh = handlePercipitation(response);
+  console.log(snoh);
+}
+
+function handlePercipitation(response) {
+  if (response.rain) {
+    return response.rain;
+  }
+  if (response.snow) {
+    return response.snow;
+  }
+
+  return { "1hr": 0 };
+}
+
+console.log("first!");
 
 // const testData = {
 //   coord: {
