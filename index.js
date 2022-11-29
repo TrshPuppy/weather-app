@@ -1,5 +1,5 @@
 import key from "./key.js";
-import "./style.css";
+// import "./style.css";
 
 // Data variables:
 let cityWeather;
