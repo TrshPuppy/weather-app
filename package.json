@@ -16,11 +16,6 @@
     "url": "https://github.com/TrshPuppy/weather-app/issues"
   },
   "homepage": "https://github.com/TrshPuppy/weather-app#readme",
-  "dependencies": {
-    "css-loader": "^6.7.2",
-    "inline-source-map": "^0.6.2",
-    "style-loader": "^3.3.1"
-  },
   "devDependencies": {
     "parcel": "^2.8.0"
   }
