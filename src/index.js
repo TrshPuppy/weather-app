@@ -1,4 +1,5 @@
 import key from "./key.js";
+import "./style.css";
 
 // Data variables:
 let cityWeather;
@@ -12,7 +13,10 @@ let clouds;
 // Input variables:
 const form = document.querySelector("form");
 let city;
-let units;
+let units = "imperial";
+
+// Other:
+const contentDiv = document.getElementById("content");
 
 // city = "Tucson";
 //"Ittoqqortoormiit"
@@ -22,6 +26,7 @@ let units;
 //     -wind speed
 //     - rain
 //     -clouds
+
 function handleInput(e) {
   e.preventDefault();
   city = e.target.querySelector("input").value;
@@ -34,16 +39,20 @@ function handleInput(e) {
     .then(function (response) {
       return response.json();
     })
-    .then(storeMyResponse);
+    .then(displayData);
+
+  // displayData();
 }
 
-function storeMyResponse(response) {
-  console.log(response);
+//rename this function to "displayData" bc u don't need to save shit - from Steve
+function displayData(response) {
   cityWeather = response.weather;
   main = response.main;
+  console.log(main);
   visibility = response.visibility;
   windSpeed = response.wind.speed;
   snoh = handlePrecipitation(response);
+  console.log(cityWeather);
 }
 
 function handlePrecipitation(response) {
@@ -61,9 +70,16 @@ function handleTemperature(response) {
   temperature = main.temp;
 }
 
+// function displayData() {
+//   console.log("tiddies!");
+//   // let dataPiece = document.createElement("p");
+//   // dataPiece.textContent =
+// }
+
 // function handleWeather(response)
 
 console.log("first!");
+
 // Event Listeners:
 form.addEventListener("submit", handleInput);
 
