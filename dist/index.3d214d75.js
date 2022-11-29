@@ -573,7 +573,7 @@ function handleInput(e) {
 function displayData(response) {
     cityWeather = response.weather;
     main = response.main;
-    console.log(main);
+    console.log(response);
     visibility = response.visibility;
     windSpeed = response.wind.speed;
     snoh = handlePrecipitation(response);
