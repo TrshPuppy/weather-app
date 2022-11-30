@@ -547,9 +547,11 @@ let clouds;
 // Input variables:
 const form = document.querySelector("form");
 let city;
-let units = "imperial";
+let units = "standard";
 // Other:
 const contentDiv = document.getElementById("content");
+const tempDiv = document.getElementById("temp-div");
+// const tempH3 = document.getElementById("temp-h3");
 // city = "Tucson";
 //"Ittoqqortoormiit"
 // weather (object)
@@ -569,15 +571,15 @@ function handleInput(e) {
     }).then(displayData);
 // displayData();
 }
-//rename this function to "displayData" bc u don't need to save shit - from Steve
 function displayData(response) {
+    console.log(response);
     cityWeather = response.weather;
     main = response.main;
-    console.log(response);
     visibility = response.visibility;
     windSpeed = response.wind.speed;
     snoh = handlePrecipitation(response);
-    console.log(cityWeather);
+    // Temperature
+    handleTemperature(response.main);
 }
 function handlePrecipitation(response) {
     if (response.rain) return response.rain;
@@ -586,8 +588,22 @@ function handlePrecipitation(response) {
         "1hr": 0
     };
 }
-function handleTemperature(response) {
-    temperature = main.temp;
+function handleTemperature(tempData) {
+    const tempH4 = document.createElement("h4");
+    tempDiv.appendChild(tempH4);
+    tempH4.textContent = `${tempData.temp} ${handleUnits()}`;
+}
+function handleUnits() {
+    switch(units){
+        case "imperial":
+            return "\xb0F";
+        case "metric":
+            return "\xb0C";
+        case "standard":
+            return "K";
+        default:
+            return "K";
+    }
 }
 // function displayData() {
 //   console.log("tiddies!");
