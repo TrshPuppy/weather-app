@@ -4,20 +4,22 @@ import key from "./key.js";
 // Data variables:
 let cityWeather;
 let main;
-let temperature;
+let tempInKelvin;
 let visibility;
 let snoh;
 let windSpeed;
 let clouds;
+let possibleUnits = ["imperial", "metric"]; // 0 = imperial, 1 = metric
 
 // Input variables:
 const form = document.querySelector("form");
 let city;
-let units = "imperial";
+let currentUnit = 1; //imperial = even numbers, metric = odd numbers
 
 // Other:
 const contentDiv = document.getElementById("content");
-const tempDiv = document.getElementById("temp-div");
+const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
+  document.getElementById("temp-div");
 // const tempH3 = document.getElementById("temp-h3");
 
 // city = "Tucson";
@@ -35,15 +37,13 @@ function handleInput(e) {
   console.log(city);
 
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${key}&units=${units}`,
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${key}&units=standard}`,
     { mode: "cors" }
   )
     .then(function (response) {
       return response.json();
     })
     .then(displayData);
-
-  // displayData();
 }
 
 function displayData(response) {
@@ -56,7 +56,8 @@ function displayData(response) {
   snoh = handlePrecipitation(response);
 
   // Temperature
-  handleTemperature(response.main);
+  tempInKelvin = response.main.temp;
+  handleTemperature(tempInKelvin);
 }
 
 function handlePrecipitation(response) {
@@ -70,14 +71,23 @@ function handlePrecipitation(response) {
   return { "1hr": 0 };
 }
 
-function handleTemperature(tempData) {
-  const tempH4 = document.createElement("h4");
-  tempDiv.appendChild(tempH4);
-  tempH4.textContent = `${tempData.temp} ${handleUnits()}`;
+function handleTemperature(tempData, currentUnit) {
+  let tempToDisplay;
+
+  if (!currentUnit) {
+    // math for K = F
+    //F = 1.8*(K-273) + 32.
+    tempToDisplay = 1.8 * (tempData - 273.15) + 32;
+  } else {
+    // math for K = C
+    tempToDisplay = tempData - 273.15;
+  }
+
+  handleTempUI(tempToDisplay);
 }
 
 function handleUnits() {
-  switch (units) {
+  switch (currentUnit) {
     case "imperial":
       return "°F";
     case "metric":
@@ -88,13 +98,27 @@ function handleUnits() {
       return "K";
   }
 }
-// function displayData() {
-//   console.log("tiddies!");
-//   // let dataPiece = document.createElement("p");
-//   // dataPiece.textContent =
-// }
 
-// function handleWeather(response)
+function handleTempUI(tempToDisplay) {
+  SheGotWhiteCreamOnHerFaceAsShePreParedTo.textContent = "";
+  const tempH4 = document.createElement("h4");
+  SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(tempH4);
+  tempH4.textContent = `${tempToDisplay} ${handleUnits()}`;
+
+  const unitsButton = document.createElement("button");
+  unitsButton.innerText = possibleUnits[currentUnit ^ 1];
+
+  unitsButton.addEventListener("click", () => handleUnitChoice());
+  SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(unitsButton);
+}
+// return the new unit choice
+
+//handle temperature doees the math
+
+function handleUnitChoice() {
+  currentUnit = currentUnit ^ 1;
+  handleTemperature(tempInKelvin, currentUnit);
+}
 
 console.log("first!");
 
