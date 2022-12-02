@@ -1,6 +1,5 @@
 import key from "./key.js";
-import handleTemperature from "./temp.js";
-import previousUnit from "./temp.js";
+import { handleTemperature, previousUnit } from "./temp.js";
 // import "./style.css";
 
 // Exports

@@ -6,11 +6,10 @@ import {
 
 // const contentDiv = document.getElementById("content");
 
-export let previousUnit;
-previousUnit = 0;
+export let previousUnit = 0;
 const possibleUnits = ["imperial", "metric"];
 
-export default function handleTemperature(tempInKelvin, currentUnit) {
+export function handleTemperature(tempInKelvin, currentUnit) {
   let tempToDisplay;
 
   if (!currentUnit) {

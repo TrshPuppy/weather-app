@@ -539,7 +539,6 @@ parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
 var _keyJs = require("./key.js");
 var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
 var _tempJs = require("./temp.js");
-var _tempJsDefault = parcelHelpers.interopDefault(_tempJs);
 // import "./style.css";
 // Exports
 const SheGotWhiteCreamOnHerFaceAsShePreParedTo = document.getElementById("temp-div");
@@ -570,7 +569,7 @@ let gloryHole; // city
 // handleInput
 function handleTemperatureChange(e) {
     e.preventDefault();
-    console.log(`previous Unit: ${(0, _tempJsDefault.default)}`);
+    console.log(`previous Unit: ${(0, _tempJs.previousUnit)}`);
     gloryHole = e.target.querySelector("input").value;
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`, {
         mode: "cors"
@@ -587,7 +586,7 @@ function displayData(response) {
     snoh = handlePrecipitation(response);
     // Temperature
     tempInKelvin = response.main.temp;
-    (0, _tempJsDefault.default)(tempInKelvin, (0, _tempJsDefault.default));
+    (0, _tempJs.handleTemperature)(tempInKelvin, (0, _tempJs.previousUnit));
 }
 function handlePrecipitation(response) {
     if (response.rain) return response.rain;
@@ -769,9 +768,9 @@ exports.export = function(dest, destName, get) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "previousUnit", ()=>previousUnit);
+parcelHelpers.export(exports, "handleTemperature", ()=>handleTemperature);
 var _indexJs = require("./index.js");
-let previousUnit;
-previousUnit = 0;
+let previousUnit = 0;
 const possibleUnits = [
     "imperial",
     "metric"
@@ -785,7 +784,6 @@ function handleTemperature(tempInKelvin, currentUnit) {
     tempToDisplay = Math.trunc(tempInKelvin - 273.15);
     handleTempUI(tempToDisplay);
 }
-exports.default = handleTemperature;
 function handleTempUI(tempToDisplay) {
     (0, _indexJs.SheGotWhiteCreamOnHerFaceAsShePreParedTo).textContent = "";
     const tempH4 = document.createElement("h4");
