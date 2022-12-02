@@ -533,25 +533,32 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"bB7Pu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "SheGotWhiteCreamOnHerFaceAsShePreParedTo", ()=>SheGotWhiteCreamOnHerFaceAsShePreParedTo);
+parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
 var _keyJs = require("./key.js");
 var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
+var _tempJs = require("./temp.js");
+var _tempJsDefault = parcelHelpers.interopDefault(_tempJs);
 // import "./style.css";
+// Exports
+const SheGotWhiteCreamOnHerFaceAsShePreParedTo = document.getElementById("temp-div");
 // Data variables:
 let cityWeather;
 let main;
-let temperature;
+let tempInKelvin;
 let visibility;
 let snoh;
 let windSpeed;
 let clouds;
 // Input variables:
 const form = document.querySelector("form");
-let city;
-let units = "standard";
+let gloryHole; // city
+// let previousUnit = 0; //imperial = even numbers, metric = odd numbers
 // Other:
-const contentDiv = document.getElementById("content");
-const tempDiv = document.getElementById("temp-div");
-// const tempH3 = document.getElementById("temp-h3");
+// const contentDiv = document.getElementById("content");
+// const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
+//   document.getElementById("temp-div");
 // city = "Tucson";
 //"Ittoqqortoormiit"
 // weather (object)
@@ -560,26 +567,27 @@ const tempDiv = document.getElementById("temp-div");
 //     -wind speed
 //     - rain
 //     -clouds
-function handleInput(e) {
+// handleInput
+function handleTemperatureChange(e) {
     e.preventDefault();
-    city = e.target.querySelector("input").value;
-    console.log(city);
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${(0, _keyJsDefault.default)}&units=${units}`, {
+    console.log(`previous Unit: ${(0, _tempJsDefault.default)}`);
+    gloryHole = e.target.querySelector("input").value;
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`, {
         mode: "cors"
     }).then(function(response) {
         return response.json();
     }).then(displayData);
-// displayData();
 }
 function displayData(response) {
     console.log(response);
     cityWeather = response.weather;
     main = response.main;
-    visibility = response.visibility;
-    windSpeed = response.wind.speed;
+    // visibility = response.visibility;
+    // windSpeed = response.wind.speed;
     snoh = handlePrecipitation(response);
     // Temperature
-    handleTemperature(response.main);
+    tempInKelvin = response.main.temp;
+    (0, _tempJsDefault.default)(tempInKelvin, (0, _tempJsDefault.default));
 }
 function handlePrecipitation(response) {
     if (response.rain) return response.rain;
@@ -588,32 +596,45 @@ function handlePrecipitation(response) {
         "1hr": 0
     };
 }
-function handleTemperature(tempData) {
-    const tempH4 = document.createElement("h4");
-    tempDiv.appendChild(tempH4);
-    tempH4.textContent = `${tempData.temp} ${handleUnits()}`;
-}
-function handleUnits() {
-    switch(units){
-        case "imperial":
-            return "\xb0F";
-        case "metric":
-            return "\xb0C";
-        case "standard":
-            return "K";
-        default:
-            return "K";
-    }
-}
-// function displayData() {
-//   console.log("tiddies!");
-//   // let dataPiece = document.createElement("p");
-//   // dataPiece.textContent =
+// function handleTemperature(tempData, currentUnit) {
+//   let tempToDisplay;
+//   if (!currentUnit) {
+//     // math for K = F
+//     //F = 1.8*(K-273) + 32.
+//     tempToDisplay = Math.trunc(1.8 * (tempData - 273.15) + 32);
+//   } else {
+//     // math for K = C
+//     tempToDisplay = Math.trunc(tempData - 273.15);
+//   }
+//   handleTempUI(tempToDisplay);
 // }
-// function handleWeather(response)
+// function handleRandyJohnson() {
+//   switch (previousUnit) {
+//     case 0:
+//       return "°F";
+//     case 1:
+//       return "°C";
+//     default:
+//       return "K";
+//   }
+// }
+// function handleTempUI(tempToDisplay) {
+//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.textContent = "";
+//   const tempH4 = document.createElement("h4");
+//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(tempH4);
+//   tempH4.textContent = `${tempToDisplay} ${handleRandyJohnson()}`;
+//   const unitsButton = document.createElement("button");
+//   unitsButton.innerText = possibleUnits[previousUnit ^ 1];
+//   unitsButton.addEventListener("click", () => handleUnitChoice());
+//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(unitsButton);
+// }
+// function handleUnitChoice() {
+//   previousUnit = previousUnit ^ 1;
+//   handleTemperature(tempInKelvin, previousUnit);
+// }
 console.log("first!");
 // Event Listeners:
-form.addEventListener("submit", handleInput); // const testData = {
+form.addEventListener("submit", handleTemperatureChange); // const testData = {
  //   coord: {
  //     lon: 10.99,
  //     lat: 44.34,
@@ -707,7 +728,7 @@ form.addEventListener("submit", handleInput); // const testData = {
  // -
  // */
 
-},{"./key.js":"3Tcif","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Tcif":[function(require,module,exports) {
+},{"./key.js":"3Tcif","./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Tcif":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const key = "1ab690fb152481b7a35934b5a330d3c2";
@@ -743,6 +764,55 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
+},{}],"4nyUu":[function(require,module,exports) {
+// Imports:
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "previousUnit", ()=>previousUnit);
+var _indexJs = require("./index.js");
+let previousUnit;
+previousUnit = 0;
+const possibleUnits = [
+    "imperial",
+    "metric"
+];
+function handleTemperature(tempInKelvin, currentUnit) {
+    let tempToDisplay;
+    if (!currentUnit) // math for K = F
+    //F = 1.8*(K-273) + 32.
+    tempToDisplay = Math.trunc(1.8 * (tempInKelvin - 273.15) + 32);
+    else // math for K = C
+    tempToDisplay = Math.trunc(tempInKelvin - 273.15);
+    handleTempUI(tempToDisplay);
+}
+exports.default = handleTemperature;
+function handleTempUI(tempToDisplay) {
+    (0, _indexJs.SheGotWhiteCreamOnHerFaceAsShePreParedTo).textContent = "";
+    const tempH4 = document.createElement("h4");
+    (0, _indexJs.SheGotWhiteCreamOnHerFaceAsShePreParedTo).appendChild(tempH4);
+    tempH4.textContent = `${tempToDisplay} ${handleRandyJohnson()}`;
+    const unitsButton = document.createElement("button");
+    unitsButton.innerText = possibleUnits[previousUnit ^ 1];
+    unitsButton.addEventListener("click", ()=>handleUnitChoice());
+    (0, _indexJs.SheGotWhiteCreamOnHerFaceAsShePreParedTo).appendChild(unitsButton);
+}
+//Handle units on button
+function handleRandyJohnson() {
+    switch(previousUnit){
+        case 0:
+            return "\xb0F";
+        case 1:
+            return "\xb0C";
+        default:
+            return "K";
+    }
+}
+function handleUnitChoice() {
+    console.log(previousUnit);
+    previousUnit = previousUnit ^ 1;
+    handleTemperature((0, _indexJs.tempInKelvin), previousUnit);
+}
+
+},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
 
 //# sourceMappingURL=index.3d214d75.js.map
