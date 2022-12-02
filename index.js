@@ -1,8 +1,11 @@
+// Imports
 import key from "./key.js";
-import { handleTemperature, previousUnit } from "./temp.js";
-// import "./style.css";
+import { handleTemperature } from "./temp.js";
+import { handleConditions } from "./conditions.js";
 
 // Exports
+export let previousUnit = 0;
+export const possibleUnits = ["imperial", "metric"];
 const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
   document.getElementById("temp-div");
 export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
@@ -11,21 +14,16 @@ export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
 let cityWeather;
 let main;
 let tempInKelvin;
+let conditions;
 export { tempInKelvin };
-let visibility;
 let snoh;
-let windSpeed;
-let clouds;
 
 // Input variables:
 const form = document.querySelector("form");
 let gloryHole; // city
-// let previousUnit = 0; //imperial = even numbers, metric = odd numbers
 
 // Other:
 // const contentDiv = document.getElementById("content");
-// const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
-//   document.getElementById("temp-div");
 
 // city = "Tucson";
 //"Ittoqqortoormiit"
@@ -59,11 +57,22 @@ function displayData(response) {
   // visibility = response.visibility;
   // windSpeed = response.wind.speed;
 
-  snoh = handlePrecipitation(response);
-
   // Temperature
   tempInKelvin = response.main.temp;
   handleTemperature(tempInKelvin, previousUnit);
+
+  // Conditions
+  snoh = handlePrecipitation(response);
+  weather = response.weather;
+  wind = response.wind;
+  handleConditions(snoh, weather);
+}
+
+export function handleUnitChoice() {
+  console.log(previousUnit);
+  previousUnit = previousUnit ^ 1;
+  handleTemperature(tempInKelvin, previousUnit);
+  handleConditions();
 }
 
 function handlePrecipitation(response) {
@@ -73,55 +82,8 @@ function handlePrecipitation(response) {
   if (response.snow) {
     return response.snow;
   }
-
   return { "1hr": 0 };
 }
-
-// function handleTemperature(tempData, currentUnit) {
-//   let tempToDisplay;
-
-//   if (!currentUnit) {
-//     // math for K = F
-//     //F = 1.8*(K-273) + 32.
-//     tempToDisplay = Math.trunc(1.8 * (tempData - 273.15) + 32);
-//   } else {
-//     // math for K = C
-//     tempToDisplay = Math.trunc(tempData - 273.15);
-//   }
-
-//   handleTempUI(tempToDisplay);
-// }
-
-// function handleRandyJohnson() {
-//   switch (previousUnit) {
-//     case 0:
-//       return "°F";
-//     case 1:
-//       return "°C";
-//     default:
-//       return "K";
-//   }
-// }
-
-// function handleTempUI(tempToDisplay) {
-//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.textContent = "";
-//   const tempH4 = document.createElement("h4");
-//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(tempH4);
-//   tempH4.textContent = `${tempToDisplay} ${handleRandyJohnson()}`;
-
-//   const unitsButton = document.createElement("button");
-//   unitsButton.innerText = possibleUnits[previousUnit ^ 1];
-
-//   unitsButton.addEventListener("click", () => handleUnitChoice());
-//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(unitsButton);
-// }
-
-// function handleUnitChoice() {
-//   previousUnit = previousUnit ^ 1;
-//   handleTemperature(tempInKelvin, previousUnit);
-// }
-
-console.log("first!");
 
 // Event Listeners:
 form.addEventListener("submit", handleTemperatureChange);

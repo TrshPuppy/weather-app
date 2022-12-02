@@ -532,32 +532,35 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"bB7Pu":[function(require,module,exports) {
+// Imports
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "previousUnit", ()=>previousUnit);
+parcelHelpers.export(exports, "possibleUnits", ()=>possibleUnits);
 parcelHelpers.export(exports, "SheGotWhiteCreamOnHerFaceAsShePreParedTo", ()=>SheGotWhiteCreamOnHerFaceAsShePreParedTo);
 parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
+parcelHelpers.export(exports, "handleUnitChoice", ()=>handleUnitChoice);
 var _keyJs = require("./key.js");
 var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
 var _tempJs = require("./temp.js");
-// import "./style.css";
-// Exports
+var _conditionsJs = require("./conditions.js");
+let previousUnit = 0;
+const possibleUnits = [
+    "imperial",
+    "metric"
+];
 const SheGotWhiteCreamOnHerFaceAsShePreParedTo = document.getElementById("temp-div");
 // Data variables:
 let cityWeather;
 let main;
 let tempInKelvin;
-let visibility;
+let conditions;
 let snoh;
-let windSpeed;
-let clouds;
 // Input variables:
 const form = document.querySelector("form");
 let gloryHole; // city
-// let previousUnit = 0; //imperial = even numbers, metric = odd numbers
 // Other:
 // const contentDiv = document.getElementById("content");
-// const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
-//   document.getElementById("temp-div");
 // city = "Tucson";
 //"Ittoqqortoormiit"
 // weather (object)
@@ -569,7 +572,7 @@ let gloryHole; // city
 // handleInput
 function handleTemperatureChange(e) {
     e.preventDefault();
-    console.log(`previous Unit: ${(0, _tempJs.previousUnit)}`);
+    console.log(`previous Unit: ${previousUnit}`);
     gloryHole = e.target.querySelector("input").value;
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`, {
         mode: "cors"
@@ -583,10 +586,20 @@ function displayData(response) {
     main = response.main;
     // visibility = response.visibility;
     // windSpeed = response.wind.speed;
-    snoh = handlePrecipitation(response);
     // Temperature
     tempInKelvin = response.main.temp;
-    (0, _tempJs.handleTemperature)(tempInKelvin, (0, _tempJs.previousUnit));
+    (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
+    // Conditions
+    snoh = handlePrecipitation(response);
+    weather = response.weather;
+    wind = response.wind;
+    (0, _conditionsJs.handleConditions)(snoh, weather);
+}
+function handleUnitChoice() {
+    console.log(previousUnit);
+    previousUnit = previousUnit ^ 1;
+    (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
+    (0, _conditionsJs.handleConditions)();
 }
 function handlePrecipitation(response) {
     if (response.rain) return response.rain;
@@ -595,43 +608,6 @@ function handlePrecipitation(response) {
         "1hr": 0
     };
 }
-// function handleTemperature(tempData, currentUnit) {
-//   let tempToDisplay;
-//   if (!currentUnit) {
-//     // math for K = F
-//     //F = 1.8*(K-273) + 32.
-//     tempToDisplay = Math.trunc(1.8 * (tempData - 273.15) + 32);
-//   } else {
-//     // math for K = C
-//     tempToDisplay = Math.trunc(tempData - 273.15);
-//   }
-//   handleTempUI(tempToDisplay);
-// }
-// function handleRandyJohnson() {
-//   switch (previousUnit) {
-//     case 0:
-//       return "°F";
-//     case 1:
-//       return "°C";
-//     default:
-//       return "K";
-//   }
-// }
-// function handleTempUI(tempToDisplay) {
-//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.textContent = "";
-//   const tempH4 = document.createElement("h4");
-//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(tempH4);
-//   tempH4.textContent = `${tempToDisplay} ${handleRandyJohnson()}`;
-//   const unitsButton = document.createElement("button");
-//   unitsButton.innerText = possibleUnits[previousUnit ^ 1];
-//   unitsButton.addEventListener("click", () => handleUnitChoice());
-//   SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(unitsButton);
-// }
-// function handleUnitChoice() {
-//   previousUnit = previousUnit ^ 1;
-//   handleTemperature(tempInKelvin, previousUnit);
-// }
-console.log("first!");
 // Event Listeners:
 form.addEventListener("submit", handleTemperatureChange); // const testData = {
  //   coord: {
@@ -727,7 +703,7 @@ form.addEventListener("submit", handleTemperatureChange); // const testData = {
  // -
  // */
 
-},{"./key.js":"3Tcif","./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Tcif":[function(require,module,exports) {
+},{"./key.js":"3Tcif","./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./conditions.js":"40RD5"}],"3Tcif":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const key = "1ab690fb152481b7a35934b5a330d3c2";
@@ -767,14 +743,10 @@ exports.export = function(dest, destName, get) {
 // Imports:
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "previousUnit", ()=>previousUnit);
+// export let previousUnit = 0;
+// const possibleUnits = ["imperial", "metric"];
 parcelHelpers.export(exports, "handleTemperature", ()=>handleTemperature);
 var _indexJs = require("./index.js");
-let previousUnit = 0;
-const possibleUnits = [
-    "imperial",
-    "metric"
-];
 function handleTemperature(tempInKelvin, currentUnit) {
     let tempToDisplay;
     if (!currentUnit) // math for K = F
@@ -790,13 +762,13 @@ function handleTempUI(tempToDisplay) {
     (0, _indexJs.SheGotWhiteCreamOnHerFaceAsShePreParedTo).appendChild(tempH4);
     tempH4.textContent = `${tempToDisplay} ${handleRandyJohnson()}`;
     const unitsButton = document.createElement("button");
-    unitsButton.innerText = possibleUnits[previousUnit ^ 1];
-    unitsButton.addEventListener("click", ()=>handleUnitChoice());
+    unitsButton.innerText = (0, _indexJs.possibleUnits)[(0, _indexJs.previousUnit) ^ 1];
+    unitsButton.addEventListener("click", ()=>(0, _indexJs.handleUnitChoice)());
     (0, _indexJs.SheGotWhiteCreamOnHerFaceAsShePreParedTo).appendChild(unitsButton);
 }
 //Handle units on button
 function handleRandyJohnson() {
-    switch(previousUnit){
+    switch(0, _indexJs.previousUnit){
         case 0:
             return "\xb0F";
         case 1:
@@ -805,12 +777,23 @@ function handleRandyJohnson() {
             return "K";
     }
 }
-function handleUnitChoice() {
-    console.log(previousUnit);
-    previousUnit = previousUnit ^ 1;
-    handleTemperature((0, _indexJs.tempInKelvin), previousUnit);
+
+},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"40RD5":[function(require,module,exports) {
+/*
+ precipition
+ clouds
+ wind
+
+
+
+
+*/ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "handleConditions", ()=>handleConditions);
+function handleConditions(precipitation, weather) {
+    console.log("fuck u");
 }
 
-},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
 
 //# sourceMappingURL=index.3d214d75.js.map

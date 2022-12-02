@@ -1,13 +1,14 @@
 // Imports:
 import {
+  handleUnitChoice,
+  previousUnit,
+  possibleUnits,
   tempInKelvin,
   SheGotWhiteCreamOnHerFaceAsShePreParedTo,
 } from "./index.js";
 
-// const contentDiv = document.getElementById("content");
-
-export let previousUnit = 0;
-const possibleUnits = ["imperial", "metric"];
+// export let previousUnit = 0;
+// const possibleUnits = ["imperial", "metric"];
 
 export function handleTemperature(tempInKelvin, currentUnit) {
   let tempToDisplay;
@@ -47,10 +48,4 @@ function handleRandyJohnson() {
     default:
       return "K";
   }
-}
-
-function handleUnitChoice() {
-  console.log(previousUnit);
-  previousUnit = previousUnit ^ 1;
-  handleTemperature(tempInKelvin, previousUnit);
 }
