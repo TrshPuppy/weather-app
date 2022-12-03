@@ -582,21 +582,17 @@ function handleTemperatureChange(e) {
 }
 function displayData(response) {
     console.log(response);
-    cityWeather = response.weather;
     main = response.main;
-    // visibility = response.visibility;
-    // windSpeed = response.wind.speed;
     // Temperature
     tempInKelvin = response.main.temp;
     (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
     // Conditions
-    snoh = handlePrecipitation(response);
-    weather = response.weather;
-    wind = response.wind;
-    (0, _conditionsJs.handleConditions)(snoh, weather);
+    let snoh = handlePrecipitation(response);
+    let weather = response.weather;
+    let wind = response.wind;
+    (0, _conditionsJs.handleConditions)(snoh, weather, wind, previousUnit);
 }
 function handleUnitChoice() {
-    console.log(previousUnit);
     previousUnit = previousUnit ^ 1;
     (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
     (0, _conditionsJs.handleConditions)();
@@ -743,8 +739,6 @@ exports.export = function(dest, destName, get) {
 // Imports:
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// export let previousUnit = 0;
-// const possibleUnits = ["imperial", "metric"];
 parcelHelpers.export(exports, "handleTemperature", ()=>handleTemperature);
 var _indexJs = require("./index.js");
 function handleTemperature(tempInKelvin, currentUnit) {
@@ -787,13 +781,27 @@ function handleRandyJohnson() {
 
 
 
-*/ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+*/ // Imports
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleConditions", ()=>handleConditions);
-function handleConditions(precipitation, weather) {
-    console.log("fuck u");
+var _indexJs = require("./index.js");
+function handleConditions(precipitation, previousUnits, wind) {
+    // previousUnits === weather BC XMETRIX IS A PLEB
+    handleRandyJohnsonTrade(wind); //handleUnitConversion
+    displayConditionsUI();
 }
+function handleRandyJohnsonTrade(wind) {
+    let windSpeed;
+    let windInMPerS = wind.speed;
+    console.log(windInMPerS);
+    // Convert to metric
+    if (!(0, _indexJs.previousUnit)) windSpeed = windInMPerS * 3600 / 1610;
+    else windSpeed = windInMPerS * 3600 / 1000;
+    console.log("unit conversion iss the tids", windSpeed);
+}
+function displayConditionsUI() {}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./index.js":"bB7Pu"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
 
 //# sourceMappingURL=index.3d214d75.js.map

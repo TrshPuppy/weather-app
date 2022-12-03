@@ -52,24 +52,21 @@ function handleTemperatureChange(e) {
 
 function displayData(response) {
   console.log(response);
-  cityWeather = response.weather;
+
   main = response.main;
-  // visibility = response.visibility;
-  // windSpeed = response.wind.speed;
 
   // Temperature
   tempInKelvin = response.main.temp;
   handleTemperature(tempInKelvin, previousUnit);
 
   // Conditions
-  snoh = handlePrecipitation(response);
-  weather = response.weather;
-  wind = response.wind;
-  handleConditions(snoh, weather);
+  let snoh = handlePrecipitation(response);
+  let weather = response.weather;
+  let wind = response.wind;
+  handleConditions(snoh, weather, wind, previousUnit);
 }
 
 export function handleUnitChoice() {
-  console.log(previousUnit);
   previousUnit = previousUnit ^ 1;
   handleTemperature(tempInKelvin, previousUnit);
   handleConditions();

@@ -7,9 +7,6 @@ import {
   SheGotWhiteCreamOnHerFaceAsShePreParedTo,
 } from "./index.js";
 
-// export let previousUnit = 0;
-// const possibleUnits = ["imperial", "metric"];
-
 export function handleTemperature(tempInKelvin, currentUnit) {
   let tempToDisplay;
 
