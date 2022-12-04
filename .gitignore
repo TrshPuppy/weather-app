@@ -1,2 +1,11 @@
 key.js
 node_modules
+
+#ignore intellij project
+.idea
+
+#ignore MACOS dir attributes
+.DS_Store
+
+#ignore parcel cache
+.parcel-cache
