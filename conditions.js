@@ -9,27 +9,47 @@
 */
 
 // Imports
-import { handleUnitChoice, possibleUnits, previousUnit } from "./index.js";
+import {
+  handleUnitChoice,
+  possibleUnits,
+  previousUnit,
+  wind,
+  snoh,
+  weather,
+} from "./index.js";
 
-export function handleConditions(precipitation, previousUnits, wind) {
+// Local globals:
+let conditions;
+let windSpeed;
+
+export function handleConditions() {
   // previousUnits === weather BC XMETRIX IS A PLEB
+  // console.log("snoh:", snoh);
+  // console.log("weather:", weather);
 
   handleRandyJohnsonTrade(wind); //handleUnitConversion
+  handleDescription(weather);
   displayConditionsUI();
 }
 
 function handleRandyJohnsonTrade(wind) {
-  let windSpeed;
+  windSpeed;
   let windInMPerS = wind.speed;
-  console.log(windInMPerS);
-  // Convert to metric
-  if (!previousUnit) {
-    windSpeed = (windInMPerS * 60 * 60) / (1000 * 1.61);
-  } else {
-    windSpeed = (windInMPerS * 60 * 60) / 1000;
-  }
 
-  console.log("unit conversion iss the tids", windSpeed);
+  // Convert to metric/ imperial
+  if (!previousUnit) {
+    windSpeed = Math.trunc((windInMPerS * 60 * 60) / (1000 * 1.61));
+  } else {
+    windSpeed = Math.trunc((windInMPerS * 60 * 60) / 1000);
+  }
 }
 
+function handleDescription(weather) {
+  conditions = {
+    description: weather[0].description,
+    precipitaion: snoh,
+    wind: windSpeed,
+  };
+  console.log(conditions);
+}
 function displayConditionsUI() {}

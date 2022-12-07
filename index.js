@@ -15,8 +15,10 @@ let cityWeather;
 let main;
 let tempInKelvin;
 let conditions;
-export { tempInKelvin };
+export { tempInKelvin, wind, snoh, weather };
 let snoh;
+let wind;
+let weather;
 
 // Input variables:
 const form = document.querySelector("form");
@@ -60,10 +62,11 @@ function displayData(response) {
   handleTemperature(tempInKelvin, previousUnit);
 
   // Conditions
-  let snoh = handlePrecipitation(response);
-  let weather = response.weather;
-  let wind = response.wind;
-  handleConditions(snoh, weather, wind, previousUnit);
+  snoh = handlePrecipitation(response);
+  weather = response.weather;
+  wind = response.wind;
+
+  handleConditions();
 }
 
 export function handleUnitChoice() {

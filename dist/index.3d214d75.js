@@ -539,6 +539,9 @@ parcelHelpers.export(exports, "previousUnit", ()=>previousUnit);
 parcelHelpers.export(exports, "possibleUnits", ()=>possibleUnits);
 parcelHelpers.export(exports, "SheGotWhiteCreamOnHerFaceAsShePreParedTo", ()=>SheGotWhiteCreamOnHerFaceAsShePreParedTo);
 parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
+parcelHelpers.export(exports, "wind", ()=>wind);
+parcelHelpers.export(exports, "snoh", ()=>snoh);
+parcelHelpers.export(exports, "weather", ()=>weather);
 parcelHelpers.export(exports, "handleUnitChoice", ()=>handleUnitChoice);
 var _keyJs = require("./key.js");
 var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
@@ -556,6 +559,8 @@ let main;
 let tempInKelvin;
 let conditions;
 let snoh;
+let wind;
+let weather;
 // Input variables:
 const form = document.querySelector("form");
 let gloryHole; // city
@@ -587,10 +592,10 @@ function displayData(response) {
     tempInKelvin = response.main.temp;
     (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
     // Conditions
-    let snoh = handlePrecipitation(response);
-    let weather = response.weather;
-    let wind = response.wind;
-    (0, _conditionsJs.handleConditions)(snoh, weather, wind, previousUnit);
+    snoh = handlePrecipitation(response);
+    weather = response.weather;
+    wind = response.wind;
+    (0, _conditionsJs.handleConditions)();
 }
 function handleUnitChoice() {
     previousUnit = previousUnit ^ 1;
@@ -786,22 +791,34 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleConditions", ()=>handleConditions);
 var _indexJs = require("./index.js");
-function handleConditions(precipitation, previousUnits, wind) {
+// Local globals:
+let conditions;
+let windSpeed;
+function handleConditions() {
     // previousUnits === weather BC XMETRIX IS A PLEB
-    handleRandyJohnsonTrade(wind); //handleUnitConversion
+    // console.log("snoh:", snoh);
+    // console.log("weather:", weather);
+    handleRandyJohnsonTrade((0, _indexJs.wind)); //handleUnitConversion
+    handleDescription((0, _indexJs.weather));
     displayConditionsUI();
 }
 function handleRandyJohnsonTrade(wind) {
-    let windSpeed;
+    windSpeed;
     let windInMPerS = wind.speed;
-    console.log(windInMPerS);
-    // Convert to metric
-    if (!(0, _indexJs.previousUnit)) windSpeed = windInMPerS * 3600 / 1610;
-    else windSpeed = windInMPerS * 3600 / 1000;
-    console.log("unit conversion iss the tids", windSpeed);
+    // Convert to metric/ imperial
+    if (!(0, _indexJs.previousUnit)) windSpeed = Math.trunc(windInMPerS * 3600 / 1610);
+    else windSpeed = Math.trunc(windInMPerS * 3600 / 1000);
+}
+function handleDescription(weather) {
+    conditions = {
+        description: weather[0].description,
+        precipitaion: (0, _indexJs.snoh),
+        wind: windSpeed
+    };
+    console.log(conditions);
 }
 function displayConditionsUI() {}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./index.js":"bB7Pu"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
+},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
 
 //# sourceMappingURL=index.3d214d75.js.map
