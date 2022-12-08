@@ -565,37 +565,40 @@ let weather;
 const form = document.querySelector("form");
 let gloryHole; // city
 // Other:
-// const contentDiv = document.getElementById("content");
-// city = "Tucson";
-//"Ittoqqortoormiit"
-// weather (object)
-//     - main (temp, etc)
-//     -visibility
-//     -wind speed
-//     - rain
-//     -clouds
+// Functions
 // handleInput
 function handleTemperatureChange(e) {
     e.preventDefault();
     console.log(`previous Unit: ${previousUnit}`);
     gloryHole = e.target.querySelector("input").value;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`, {
+    const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`;
+    fetch(coordsRequestURL, {
         mode: "cors"
     }).then(function(response) {
         return response.json();
-    }).then(displayData);
+    }).then(getDataUsingCoords);
+    function getDataUsingCoords(response) {
+        const requestCoordinates = {
+            lattitude: response.coord.lat,
+            longitude: response.coord.lon
+        };
+        const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${(0, _keyJsDefault.default)}`;
+        fetch(dataRequestURL).then(function(response) {
+            return response.json();
+        }).then(displayData);
+    }
 }
 function displayData(response) {
     console.log(response);
-    main = response.main;
-    // Temperature
-    tempInKelvin = response.main.temp;
-    (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
-    // Conditions
-    snoh = handlePrecipitation(response);
-    weather = response.weather;
-    wind = response.wind;
-    (0, _conditionsJs.handleConditions)();
+// main = response.main;
+// // Temperature
+// tempInKelvin = response.main.temp;
+// handleTemperature(tempInKelvin, previousUnit);
+// // Conditions
+// snoh = handlePrecipitation(response);
+// weather = response.weather;
+// wind = response.wind;
+// handleConditions();
 }
 function handleUnitChoice() {
     previousUnit = previousUnit ^ 1;
@@ -792,7 +795,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleConditions", ()=>handleConditions);
 var _indexJs = require("./index.js");
 // Local globals:
-let conditions;
+let deescription;
 let windSpeed;
 function handleConditions() {
     // previousUnits === weather BC XMETRIX IS A PLEB
@@ -810,13 +813,16 @@ function handleRandyJohnsonTrade(wind) {
     else windSpeed = Math.trunc(windInMPerS * 3600 / 1000);
 }
 function handleDescription(weather) {
-    conditions = {
-        description: weather[0].description,
+    const icon = getConditionsIcon(weather.description);
+    deescription = {
+        conditions: weather[0].description,
+        icon: icon,
         precipitaion: (0, _indexJs.snoh),
         wind: windSpeed
     };
-    console.log(conditions);
+    console.log(description);
 }
+function getConditionsIcon(conditions) {}
 function displayConditionsUI() {}
 
 },{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")

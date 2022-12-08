@@ -25,48 +25,53 @@ const form = document.querySelector("form");
 let gloryHole; // city
 
 // Other:
-// const contentDiv = document.getElementById("content");
 
-// city = "Tucson";
-//"Ittoqqortoormiit"
-// weather (object)
-//     - main (temp, etc)
-//     -visibility
-//     -wind speed
-//     - rain
-//     -clouds
-
+// Functions
 // handleInput
 function handleTemperatureChange(e) {
   e.preventDefault();
   console.log(`previous Unit: ${previousUnit}`);
   gloryHole = e.target.querySelector("input").value;
 
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${key}&units=standard}`,
-    { mode: "cors" }
-  )
+  const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${key}&units=standard}`;
+
+  fetch(coordsRequestURL, { mode: "cors" })
     .then(function (response) {
       return response.json();
     })
-    .then(displayData);
+    .then(getDataUsingCoords);
+
+  function getDataUsingCoords(response) {
+    const requestCoordinates = {
+      lattitude: response.coord.lat,
+      longitude: response.coord.lon,
+    };
+
+    const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${key}`;
+
+    fetch(dataRequestURL)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(displayData);
+  }
 }
 
 function displayData(response) {
   console.log(response);
 
-  main = response.main;
+  // main = response.main;
 
-  // Temperature
-  tempInKelvin = response.main.temp;
-  handleTemperature(tempInKelvin, previousUnit);
+  // // Temperature
+  // tempInKelvin = response.main.temp;
+  // handleTemperature(tempInKelvin, previousUnit);
 
-  // Conditions
-  snoh = handlePrecipitation(response);
-  weather = response.weather;
-  wind = response.wind;
+  // // Conditions
+  // snoh = handlePrecipitation(response);
+  // weather = response.weather;
+  // wind = response.wind;
 
-  handleConditions();
+  // handleConditions();
 }
 
 export function handleUnitChoice() {

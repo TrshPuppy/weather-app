@@ -19,7 +19,7 @@ import {
 } from "./index.js";
 
 // Local globals:
-let conditions;
+let deescription;
 let windSpeed;
 
 export function handleConditions() {
@@ -45,11 +45,17 @@ function handleRandyJohnsonTrade(wind) {
 }
 
 function handleDescription(weather) {
-  conditions = {
-    description: weather[0].description,
+  const icon = getConditionsIcon(weather.description);
+
+  deescription = {
+    conditions: weather[0].description,
+    icon: icon,
     precipitaion: snoh,
     wind: windSpeed,
   };
-  console.log(conditions);
+  console.log(description);
 }
+
+function getConditionsIcon(conditions) {}
+
 function displayConditionsUI() {}
