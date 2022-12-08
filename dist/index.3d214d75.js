@@ -764,14 +764,10 @@ var _indexJs = require("./index.js");
 // Local globals:
 let description;
 let windSpeed;
-let icon;
 function handleConditions() {
-    // previousUnits === weather BC XMETRIX IS A PLEB
-    // console.log("snoh:", snoh);
-    // console.log("weather:", weather);
     handleRandyJohnsonTrade((0, _indexJs.wind)); //handleUnitConversion
     handleDescription((0, _indexJs.weather));
-    displayConditionsUI();
+    displayConditionsUI(description);
 }
 function handleRandyJohnsonTrade(wind) {
     windSpeed;
@@ -790,7 +786,9 @@ function handleDescription(weather) {
         wind: windSpeed
     };
 }
-function displayConditionsUI() {}
+function displayConditionsUI(description) {
+    console.log(description);
+}
 
 },{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eqUwj":[function(require,module,exports) {
 // Imports

@@ -10,8 +10,7 @@
 
 // Imports
 import {
-  handleUnitChoice,
-  possibleUnits,
+  SheGotWhiteCreamOnHerFaceAsShePreParedTo,
   previousUnit,
   wind,
   snoh,
@@ -21,16 +20,11 @@ import {
 // Local globals:
 let description;
 let windSpeed;
-let icon;
 
 export function handleConditions() {
-  // previousUnits === weather BC XMETRIX IS A PLEB
-  // console.log("snoh:", snoh);
-  // console.log("weather:", weather);
-
   handleRandyJohnsonTrade(wind); //handleUnitConversion
   handleDescription(weather);
-  displayConditionsUI();
+  displayConditionsUI(description);
 }
 
 function handleRandyJohnsonTrade(wind) {
@@ -58,4 +52,6 @@ function handleDescription(weather) {
   };
 }
 
-function displayConditionsUI() {}
+function displayConditionsUI(description) {
+  console.log(description);
+}
