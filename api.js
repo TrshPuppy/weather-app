@@ -1,6 +1,6 @@
 // Imports
 import key from "./key.js";
-import { previousUnit, displayData } from "./index.js";
+import { displayData } from "./index.js";
 
 // Module globals:
 let gloryHole; // city

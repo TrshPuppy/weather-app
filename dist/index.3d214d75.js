@@ -542,9 +542,7 @@ parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
 parcelHelpers.export(exports, "wind", ()=>wind);
 parcelHelpers.export(exports, "snoh", ()=>snoh);
 parcelHelpers.export(exports, "weather", ()=>weather);
-// Other:
 // Functions
-// handleInput
 parcelHelpers.export(exports, "displayData", ()=>displayData);
 parcelHelpers.export(exports, "handleUnitChoice", ()=>handleUnitChoice);
 var _apiJs = require("./api.js");
@@ -558,10 +556,7 @@ const possibleUnits = [
 ];
 const SheGotWhiteCreamOnHerFaceAsShePreParedTo = document.getElementById("temp-div");
 // Data variables:
-let cityWeather;
-let main;
 let tempInKelvin;
-let conditions;
 let snoh;
 let wind;
 let weather;
@@ -569,15 +564,14 @@ let weather;
 const form = document.querySelector("form");
 function displayData(response) {
     console.log(response);
-// main = response.main;
-// // Temperature
-// tempInKelvin = response.main.temp;
-// handleTemperature(tempInKelvin, previousUnit);
-// // Conditions
-// snoh = handlePrecipitation(response);
-// weather = response.weather;
-// wind = response.wind;
-// handleConditions();
+    // Temperature
+    tempInKelvin = response.list[0].main.temp;
+    (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
+    // Conditions
+    snoh = handlePrecipitation(response);
+    weather = response.list[0].weather;
+    wind = response.list[0].wind;
+    (0, _conditionsJs.handleConditions)();
 }
 function handleUnitChoice() {
     previousUnit = previousUnit ^ 1;
@@ -585,8 +579,8 @@ function handleUnitChoice() {
     (0, _conditionsJs.handleConditions)();
 }
 function handlePrecipitation(response) {
-    if (response.rain) return response.rain;
-    if (response.snow) return response.snow;
+    if (response.list[0].main.rain) return response.list[0].main.rain;
+    if (response.list[0].main.snow) return response.list[0].main.snow;
     return {
         "1hr": 0
     };
@@ -768,8 +762,9 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleConditions", ()=>handleConditions);
 var _indexJs = require("./index.js");
 // Local globals:
-let deescription;
+let description;
 let windSpeed;
+let icon;
 function handleConditions() {
     // previousUnits === weather BC XMETRIX IS A PLEB
     // console.log("snoh:", snoh);
@@ -786,15 +781,15 @@ function handleRandyJohnsonTrade(wind) {
     else windSpeed = Math.trunc(windInMPerS * 3600 / 1000);
 }
 function handleDescription(weather) {
-    const icon = getConditionsIcon(weather.description);
-    deescription = {
+    const iconCode = weather[0].icon;
+    let iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    description = {
         conditions: weather[0].description,
-        icon: icon,
+        icon: iconURL,
         precipitaion: (0, _indexJs.snoh),
         wind: windSpeed
     };
 }
-function getConditionsIcon(conditions) {}
 function displayConditionsUI() {}
 
 },{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eqUwj":[function(require,module,exports) {

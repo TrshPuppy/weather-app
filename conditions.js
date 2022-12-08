@@ -19,8 +19,9 @@ import {
 } from "./index.js";
 
 // Local globals:
-let deescription;
+let description;
 let windSpeed;
+let icon;
 
 export function handleConditions() {
   // previousUnits === weather BC XMETRIX IS A PLEB
@@ -45,16 +46,16 @@ function handleRandyJohnsonTrade(wind) {
 }
 
 function handleDescription(weather) {
-  const icon = getConditionsIcon(weather.description);
+  const iconCode = weather[0].icon;
 
-  deescription = {
+  let iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+  description = {
     conditions: weather[0].description,
-    icon: icon,
+    icon: iconURL,
     precipitaion: snoh,
     wind: windSpeed,
   };
 }
-
-function getConditionsIcon(conditions) {}
 
 function displayConditionsUI() {}

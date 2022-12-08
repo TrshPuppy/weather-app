@@ -11,10 +11,7 @@ const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
 export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
 
 // Data variables:
-let cityWeather;
-let main;
 let tempInKelvin;
-let conditions;
 export { tempInKelvin, wind, snoh, weather };
 let snoh;
 let wind;
@@ -23,26 +20,20 @@ let weather;
 // Input variables:
 const form = document.querySelector("form");
 
-// Other:
-
 // Functions
-// handleInput
-
 export function displayData(response) {
   console.log(response);
 
-  // main = response.main;
+  // Temperature
+  tempInKelvin = response.list[0].main.temp;
+  handleTemperature(tempInKelvin, previousUnit);
 
-  // // Temperature
-  // tempInKelvin = response.main.temp;
-  // handleTemperature(tempInKelvin, previousUnit);
+  // Conditions
+  snoh = handlePrecipitation(response);
+  weather = response.list[0].weather;
+  wind = response.list[0].wind;
 
-  // // Conditions
-  // snoh = handlePrecipitation(response);
-  // weather = response.weather;
-  // wind = response.wind;
-
-  // handleConditions();
+  handleConditions();
 }
 
 export function handleUnitChoice() {
@@ -52,11 +43,11 @@ export function handleUnitChoice() {
 }
 
 function handlePrecipitation(response) {
-  if (response.rain) {
-    return response.rain;
+  if (response.list[0].main.rain) {
+    return response.list[0].main.rain;
   }
-  if (response.snow) {
-    return response.snow;
+  if (response.list[0].main.snow) {
+    return response.list[0].main.snow;
   }
   return { "1hr": 0 };
 }
