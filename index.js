@@ -1,5 +1,5 @@
 // Imports
-import key from "./key.js";
+import handleTemperatureChange from "./api.js";
 import { handleTemperature } from "./temp.js";
 import { handleConditions } from "./conditions.js";
 
@@ -22,42 +22,13 @@ let weather;
 
 // Input variables:
 const form = document.querySelector("form");
-let gloryHole; // city
 
 // Other:
 
 // Functions
 // handleInput
-function handleTemperatureChange(e) {
-  e.preventDefault();
-  console.log(`previous Unit: ${previousUnit}`);
-  gloryHole = e.target.querySelector("input").value;
 
-  const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${key}&units=standard}`;
-
-  fetch(coordsRequestURL, { mode: "cors" })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(getDataUsingCoords);
-
-  function getDataUsingCoords(response) {
-    const requestCoordinates = {
-      lattitude: response.coord.lat,
-      longitude: response.coord.lon,
-    };
-
-    const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${key}`;
-
-    fetch(dataRequestURL)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(displayData);
-  }
-}
-
-function displayData(response) {
+export function displayData(response) {
   console.log(response);
 
   // main = response.main;

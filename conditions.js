@@ -53,7 +53,6 @@ function handleDescription(weather) {
     precipitaion: snoh,
     wind: windSpeed,
   };
-  console.log(description);
 }
 
 function getConditionsIcon(conditions) {}

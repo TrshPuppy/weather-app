@@ -542,9 +542,13 @@ parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
 parcelHelpers.export(exports, "wind", ()=>wind);
 parcelHelpers.export(exports, "snoh", ()=>snoh);
 parcelHelpers.export(exports, "weather", ()=>weather);
+// Other:
+// Functions
+// handleInput
+parcelHelpers.export(exports, "displayData", ()=>displayData);
 parcelHelpers.export(exports, "handleUnitChoice", ()=>handleUnitChoice);
-var _keyJs = require("./key.js");
-var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
+var _apiJs = require("./api.js");
+var _apiJsDefault = parcelHelpers.interopDefault(_apiJs);
 var _tempJs = require("./temp.js");
 var _conditionsJs = require("./conditions.js");
 let previousUnit = 0;
@@ -563,31 +567,6 @@ let wind;
 let weather;
 // Input variables:
 const form = document.querySelector("form");
-let gloryHole; // city
-// Other:
-// Functions
-// handleInput
-function handleTemperatureChange(e) {
-    e.preventDefault();
-    console.log(`previous Unit: ${previousUnit}`);
-    gloryHole = e.target.querySelector("input").value;
-    const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`;
-    fetch(coordsRequestURL, {
-        mode: "cors"
-    }).then(function(response) {
-        return response.json();
-    }).then(getDataUsingCoords);
-    function getDataUsingCoords(response) {
-        const requestCoordinates = {
-            lattitude: response.coord.lat,
-            longitude: response.coord.lon
-        };
-        const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${(0, _keyJsDefault.default)}`;
-        fetch(dataRequestURL).then(function(response) {
-            return response.json();
-        }).then(displayData);
-    }
-}
 function displayData(response) {
     console.log(response);
 // main = response.main;
@@ -613,7 +592,7 @@ function handlePrecipitation(response) {
     };
 }
 // Event Listeners:
-form.addEventListener("submit", handleTemperatureChange); // const testData = {
+form.addEventListener("submit", (0, _apiJsDefault.default)); // const testData = {
  //   coord: {
  //     lon: 10.99,
  //     lat: 44.34,
@@ -707,43 +686,7 @@ form.addEventListener("submit", handleTemperatureChange); // const testData = {
  // -
  // */
 
-},{"./key.js":"3Tcif","./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./conditions.js":"40RD5"}],"3Tcif":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-const key = "1ab690fb152481b7a35934b5a330d3c2";
-exports.default = key;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"4nyUu":[function(require,module,exports) {
+},{"./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./conditions.js":"40RD5","./api.js":"eqUwj"}],"4nyUu":[function(require,module,exports) {
 // Imports:
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -780,7 +723,37 @@ function handleRandyJohnson() {
     }
 }
 
-},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"40RD5":[function(require,module,exports) {
+},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"40RD5":[function(require,module,exports) {
 /*
  precipition
  clouds
@@ -820,11 +793,50 @@ function handleDescription(weather) {
         precipitaion: (0, _indexJs.snoh),
         wind: windSpeed
     };
-    console.log(description);
 }
 function getConditionsIcon(conditions) {}
 function displayConditionsUI() {}
 
-},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
+},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eqUwj":[function(require,module,exports) {
+// Imports
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _keyJs = require("./key.js");
+var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
+var _indexJs = require("./index.js");
+// Module globals:
+let gloryHole; // city
+function handleTemperatureChange(e) {
+    e.preventDefault();
+    // City input:
+    gloryHole = e.target.querySelector("input").value;
+    // Build coordinate request URL:
+    const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`;
+    fetch(coordsRequestURL, {
+        mode: "cors"
+    }).then(function(response) {
+        return response.json();
+    }).then(getDataUsingCoords);
+    function getDataUsingCoords(response) {
+        const requestCoordinates = {
+            lattitude: response.coord.lat,
+            longitude: response.coord.lon
+        };
+        // Build data request URL:
+        const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${(0, _keyJsDefault.default)}`;
+        fetch(dataRequestURL).then(function(response) {
+            return response.json();
+        }).then((0, _indexJs.displayData));
+    }
+}
+exports.default = handleTemperatureChange;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./key.js":"3Tcif","./index.js":"bB7Pu"}],"3Tcif":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const key = "1ab690fb152481b7a35934b5a330d3c2";
+exports.default = key;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["awEvQ","bB7Pu"], "bB7Pu", "parcelRequirebbde")
 
 //# sourceMappingURL=index.3d214d75.js.map
