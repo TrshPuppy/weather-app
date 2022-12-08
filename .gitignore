@@ -8,7 +8,7 @@ node_modules
 .DS_Store
 
 #ignore parcel cache
-.parcel-cache/
+../.parcel-cache/
 
 
 # node_modules/
