@@ -1,5 +1,5 @@
 // Imports
-import key from "./key.js";
+import handleTemperatureChange from "./api.js";
 import { handleTemperature } from "./temp.js";
 import { handleConditions } from "./conditions.js";
 
@@ -11,10 +11,7 @@ const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
 export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
 
 // Data variables:
-let cityWeather;
-let main;
 let tempInKelvin;
-let conditions;
 export { tempInKelvin, wind, snoh, weather };
 let snoh;
 let wind;
@@ -22,49 +19,19 @@ let weather;
 
 // Input variables:
 const form = document.querySelector("form");
-let gloryHole; // city
 
-// Other:
-// const contentDiv = document.getElementById("content");
-
-// city = "Tucson";
-//"Ittoqqortoormiit"
-// weather (object)
-//     - main (temp, etc)
-//     -visibility
-//     -wind speed
-//     - rain
-//     -clouds
-
-// handleInput
-function handleTemperatureChange(e) {
-  e.preventDefault();
-  console.log(`previous Unit: ${previousUnit}`);
-  gloryHole = e.target.querySelector("input").value;
-
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${key}&units=standard}`,
-    { mode: "cors" }
-  )
-    .then(function (response) {
-      return response.json();
-    })
-    .then(displayData);
-}
-
-function displayData(response) {
+// Functions
+export function displayData(response) {
   console.log(response);
 
-  main = response.main;
-
   // Temperature
-  tempInKelvin = response.main.temp;
+  tempInKelvin = response.list[0].main.temp;
   handleTemperature(tempInKelvin, previousUnit);
 
   // Conditions
   snoh = handlePrecipitation(response);
-  weather = response.weather;
-  wind = response.wind;
+  weather = response.list[0].weather;
+  wind = response.list[0].wind;
 
   handleConditions();
 }
@@ -76,11 +43,11 @@ export function handleUnitChoice() {
 }
 
 function handlePrecipitation(response) {
-  if (response.rain) {
-    return response.rain;
+  if (response.list[0].main.rain) {
+    return response.list[0].main.rain;
   }
-  if (response.snow) {
-    return response.snow;
+  if (response.list[0].main.snow) {
+    return response.list[0].main.snow;
   }
   return { "1hr": 0 };
 }

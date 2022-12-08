@@ -10,8 +10,7 @@
 
 // Imports
 import {
-  handleUnitChoice,
-  possibleUnits,
+  SheGotWhiteCreamOnHerFaceAsShePreParedTo,
   previousUnit,
   wind,
   snoh,
@@ -19,17 +18,13 @@ import {
 } from "./index.js";
 
 // Local globals:
-let conditions;
+let description;
 let windSpeed;
 
 export function handleConditions() {
-  // previousUnits === weather BC XMETRIX IS A PLEB
-  // console.log("snoh:", snoh);
-  // console.log("weather:", weather);
-
   handleRandyJohnsonTrade(wind); //handleUnitConversion
   handleDescription(weather);
-  displayConditionsUI();
+  displayConditionsUI(description);
 }
 
 function handleRandyJohnsonTrade(wind) {
@@ -45,11 +40,18 @@ function handleRandyJohnsonTrade(wind) {
 }
 
 function handleDescription(weather) {
-  conditions = {
-    description: weather[0].description,
+  const iconCode = weather[0].icon;
+
+  let iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+  description = {
+    conditions: weather[0].description,
+    icon: iconURL,
     precipitaion: snoh,
     wind: windSpeed,
   };
-  console.log(conditions);
 }
-function displayConditionsUI() {}
+
+function displayConditionsUI(description) {
+  console.log(description);
+}

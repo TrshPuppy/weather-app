@@ -542,9 +542,11 @@ parcelHelpers.export(exports, "tempInKelvin", ()=>tempInKelvin);
 parcelHelpers.export(exports, "wind", ()=>wind);
 parcelHelpers.export(exports, "snoh", ()=>snoh);
 parcelHelpers.export(exports, "weather", ()=>weather);
+// Functions
+parcelHelpers.export(exports, "displayData", ()=>displayData);
 parcelHelpers.export(exports, "handleUnitChoice", ()=>handleUnitChoice);
-var _keyJs = require("./key.js");
-var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
+var _apiJs = require("./api.js");
+var _apiJsDefault = parcelHelpers.interopDefault(_apiJs);
 var _tempJs = require("./temp.js");
 var _conditionsJs = require("./conditions.js");
 let previousUnit = 0;
@@ -554,47 +556,21 @@ const possibleUnits = [
 ];
 const SheGotWhiteCreamOnHerFaceAsShePreParedTo = document.getElementById("temp-div");
 // Data variables:
-let cityWeather;
-let main;
 let tempInKelvin;
-let conditions;
 let snoh;
 let wind;
 let weather;
 // Input variables:
 const form = document.querySelector("form");
-let gloryHole; // city
-// Other:
-// const contentDiv = document.getElementById("content");
-// city = "Tucson";
-//"Ittoqqortoormiit"
-// weather (object)
-//     - main (temp, etc)
-//     -visibility
-//     -wind speed
-//     - rain
-//     -clouds
-// handleInput
-function handleTemperatureChange(e) {
-    e.preventDefault();
-    console.log(`previous Unit: ${previousUnit}`);
-    gloryHole = e.target.querySelector("input").value;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`, {
-        mode: "cors"
-    }).then(function(response) {
-        return response.json();
-    }).then(displayData);
-}
 function displayData(response) {
     console.log(response);
-    main = response.main;
     // Temperature
-    tempInKelvin = response.main.temp;
+    tempInKelvin = response.list[0].main.temp;
     (0, _tempJs.handleTemperature)(tempInKelvin, previousUnit);
     // Conditions
     snoh = handlePrecipitation(response);
-    weather = response.weather;
-    wind = response.wind;
+    weather = response.list[0].weather;
+    wind = response.list[0].wind;
     (0, _conditionsJs.handleConditions)();
 }
 function handleUnitChoice() {
@@ -603,14 +579,14 @@ function handleUnitChoice() {
     (0, _conditionsJs.handleConditions)();
 }
 function handlePrecipitation(response) {
-    if (response.rain) return response.rain;
-    if (response.snow) return response.snow;
+    if (response.list[0].main.rain) return response.list[0].main.rain;
+    if (response.list[0].main.snow) return response.list[0].main.snow;
     return {
         "1hr": 0
     };
 }
 // Event Listeners:
-form.addEventListener("submit", handleTemperatureChange); // const testData = {
+form.addEventListener("submit", (0, _apiJsDefault.default)); // const testData = {
  //   coord: {
  //     lon: 10.99,
  //     lat: 44.34,
@@ -704,7 +680,7 @@ form.addEventListener("submit", handleTemperatureChange); // const testData = {
  // -
  // */
 
-},{"./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./conditions.js":"40RD5","./key.js":"3Tcif"}],"4nyUu":[function(require,module,exports) {
+},{"./temp.js":"4nyUu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./conditions.js":"40RD5","./api.js":"eqUwj"}],"4nyUu":[function(require,module,exports) {
 // Imports:
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -786,15 +762,12 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleConditions", ()=>handleConditions);
 var _indexJs = require("./index.js");
 // Local globals:
-let conditions;
+let description;
 let windSpeed;
 function handleConditions() {
-    // previousUnits === weather BC XMETRIX IS A PLEB
-    // console.log("snoh:", snoh);
-    // console.log("weather:", weather);
     handleRandyJohnsonTrade((0, _indexJs.wind)); //handleUnitConversion
     handleDescription((0, _indexJs.weather));
-    displayConditionsUI();
+    displayConditionsUI(description);
 }
 function handleRandyJohnsonTrade(wind) {
     windSpeed;
@@ -804,16 +777,54 @@ function handleRandyJohnsonTrade(wind) {
     else windSpeed = Math.trunc(windInMPerS * 3600 / 1000);
 }
 function handleDescription(weather) {
-    conditions = {
-        description: weather[0].description,
+    const iconCode = weather[0].icon;
+    let iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    description = {
+        conditions: weather[0].description,
+        icon: iconURL,
         precipitaion: (0, _indexJs.snoh),
         wind: windSpeed
     };
-    console.log(conditions);
 }
-function displayConditionsUI() {}
+function displayConditionsUI(description) {
+    console.log(description);
+}
 
-},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Tcif":[function(require,module,exports) {
+},{"./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eqUwj":[function(require,module,exports) {
+// Imports
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _keyJs = require("./key.js");
+var _keyJsDefault = parcelHelpers.interopDefault(_keyJs);
+var _indexJs = require("./index.js");
+// Module globals:
+let gloryHole; // city
+function handleTemperatureChange(e) {
+    e.preventDefault();
+    // City input:
+    gloryHole = e.target.querySelector("input").value;
+    // Build coordinate request URL:
+    const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${(0, _keyJsDefault.default)}&units=standard}`;
+    fetch(coordsRequestURL, {
+        mode: "cors"
+    }).then(function(response) {
+        return response.json();
+    }).then(getDataUsingCoords);
+    function getDataUsingCoords(response) {
+        const requestCoordinates = {
+            lattitude: response.coord.lat,
+            longitude: response.coord.lon
+        };
+        // Build data request URL:
+        const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${(0, _keyJsDefault.default)}`;
+        fetch(dataRequestURL).then(function(response) {
+            return response.json();
+        }).then((0, _indexJs.displayData));
+    }
+}
+exports.default = handleTemperatureChange;
+
+},{"./key.js":"3Tcif","./index.js":"bB7Pu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3Tcif":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const key = "1ab690fb152481b7a35934b5a330d3c2";
