@@ -1,18 +1,21 @@
 // Imports
-import handleTemperatureChange from "./api.js";
-import { handleTemperature } from "./temp.js";
+import fetchDataFromAPI from "./api.js";
+import setTempValues from "./temp.js";
+import handleUnitBtnText from "./temp.js";
+// import { convertToCurrentTempUnit } from "./temp.js";
 import { handleConditions } from "./conditions.js";
+import rebuildUI from "./generateUI.js";
 
 // Exports
-export let previousUnit = 0;
+export let currentUnit = 0;
 export const possibleUnits = ["imperial", "metric"];
-const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
-  document.getElementById("temp-div");
-export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
+// const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
+//   document.getElementById("temp-div");
+// export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
 
 // Data variables:
-let tempInKelvin;
-export { tempInKelvin, wind, snoh, weather };
+// let tempInKelvin;
+export { wind, snoh, weather };
 let snoh;
 let wind;
 let weather;
@@ -21,25 +24,28 @@ let weather;
 const form = document.querySelector("form");
 
 // Functions
-export function displayData(response) {
+export function delegateResponseData(response) {
   console.log(response);
 
   // Temperature
-  tempInKelvin = response.list[0].main.temp;
-  handleTemperature(tempInKelvin, previousUnit);
+  setTempValues(response);
+  // tempInKelvin = response.list[0].main.temp;
+  // handleTemperature(tempInKelvin, previousUnit);
 
   // Conditions
   snoh = handlePrecipitation(response);
   weather = response.list[0].weather;
   wind = response.list[0].wind;
+  // handleConditions();
 
-  handleConditions();
+  rebuildUI();
 }
 
 export function handleUnitChoice() {
-  previousUnit = previousUnit ^ 1;
-  handleTemperature(tempInKelvin, previousUnit);
-  handleConditions();
+  currentUnit = currentUnit ^ 1;
+  rebuildUI();
+  // convertToCurrentTempUnit(tempInKelvin, previousUnit);
+  // handleConditions();
 }
 
 function handlePrecipitation(response) {
@@ -53,7 +59,7 @@ function handlePrecipitation(response) {
 }
 
 // Event Listeners:
-form.addEventListener("submit", handleTemperatureChange);
+form.addEventListener("submit", fetchDataFromAPI);
 
 // const testData = {
 //   coord: {

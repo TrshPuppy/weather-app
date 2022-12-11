@@ -9,13 +9,7 @@
 */
 
 // Imports
-import {
-  SheGotWhiteCreamOnHerFaceAsShePreParedTo,
-  previousUnit,
-  wind,
-  snoh,
-  weather,
-} from "./index.js";
+import { currentUnit, wind, snoh, weather } from "./index.js";
 
 // Local globals:
 let description;
@@ -24,7 +18,6 @@ let windSpeed;
 export function handleConditions() {
   handleRandyJohnsonTrade(wind); //handleUnitConversion
   handleDescription(weather);
-  displayConditionsUI(description);
 }
 
 function handleRandyJohnsonTrade(wind) {
@@ -32,7 +25,7 @@ function handleRandyJohnsonTrade(wind) {
   let windInMPerS = wind.speed;
 
   // Convert to metric/ imperial
-  if (!previousUnit) {
+  if (!currentUnit) {
     windSpeed = Math.trunc((windInMPerS * 60 * 60) / (1000 * 1.61));
   } else {
     windSpeed = Math.trunc((windInMPerS * 60 * 60) / 1000);
@@ -52,6 +45,8 @@ function handleDescription(weather) {
   };
 }
 
-function displayConditionsUI(description) {
-  console.log(description);
+export function packageConditionsUI() {
+  // Return object
+  const CONDITIONS_PKG = {};
+  // Conditions
 }
