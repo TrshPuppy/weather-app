@@ -1,20 +1,17 @@
 // Imports
 import fetchDataFromAPI from "./api.js";
-import setTempValues from "./temp.js";
-import handleUnitBtnText from "./temp.js";
-// import { convertToCurrentTempUnit } from "./temp.js";
+import setTempValues, {
+  updateTempValues,
+  setTempUnitToDisplay,
+} from "./temp.js";
 import { handleConditions } from "./conditions.js";
 import rebuildUI from "./generateUI.js";
 
 // Exports
 export let currentUnit = 0;
 export const possibleUnits = ["imperial", "metric"];
-// const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
-//   document.getElementById("temp-div");
-// export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
 
 // Data variables:
-// let tempInKelvin;
 export { wind, snoh, weather };
 let snoh;
 let wind;
@@ -29,8 +26,6 @@ export function delegateResponseData(response) {
 
   // Temperature
   setTempValues(response);
-  // tempInKelvin = response.list[0].main.temp;
-  // handleTemperature(tempInKelvin, previousUnit);
 
   // Conditions
   snoh = handlePrecipitation(response);
@@ -43,9 +38,8 @@ export function delegateResponseData(response) {
 
 export function handleUnitChoice() {
   currentUnit = currentUnit ^ 1;
+  updateTempValues();
   rebuildUI();
-  // convertToCurrentTempUnit(tempInKelvin, previousUnit);
-  // handleConditions();
 }
 
 function handlePrecipitation(response) {

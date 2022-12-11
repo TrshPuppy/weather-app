@@ -16,11 +16,11 @@ let description;
 let windSpeed;
 
 export function handleConditions() {
-  handleRandyJohnsonTrade(wind); //handleUnitConversion
+  convertWindSpeed(wind);
   handleDescription(weather);
 }
 
-function handleRandyJohnsonTrade(wind) {
+function convertWindSpeed(wind) {
   windSpeed;
   let windInMPerS = wind.speed;
 

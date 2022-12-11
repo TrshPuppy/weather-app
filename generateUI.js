@@ -1,6 +1,7 @@
 // Imports:
 import { packageTempUI } from "./temp.js";
 import { packageConditionsUI } from "./conditions.js";
+import { handleUnitChoice } from "./index.js";
 
 // Module globals:
 const TEMP_DIV = document.getElementById("temp-div");
@@ -8,12 +9,16 @@ const CONDITIONS_DIV = document.getElementById("conditions-div");
 
 export default function rebuildUI() {
   rebuildTempDiv();
-  rebuildConditionsDiv();
+  // rebuildConditionsDiv();
 }
 
 function rebuildTempDiv() {
   // Nuke the children in the Div:
   TEMP_DIV.textContent = "";
+
+  const TEMP_H3 = document.createElement("h3");
+  TEMP_H3.textContent = "Current Temperature:";
+  TEMP_DIV.appendChild(TEMP_H3);
 
   // Fetch tempUI Obj from temp module:
   const TEMP_UI_OBJ = packageTempUI();
@@ -24,17 +29,14 @@ function rebuildTempDiv() {
 
   const UNITS_BTN = document.createElement("button");
   UNITS_BTN.innerText = TEMP_UI_OBJ.buttonText;
-  UNITS_BTN.addEventListener(
-    TEMP_UI_OBJ.buttonEventListener.listener,
-    () => TEMP_UI_OBJ.buttonEventListener.callback
-  );
+  UNITS_BTN.addEventListener("click", () => handleUnitChoice());
   TEMP_DIV.appendChild(UNITS_BTN);
 }
 
-function rebuildConditionsDiv() {
-  // Nuke the children in the Div:
-  CONDITIONS_DIV.textContent = "";
+// function rebuildConditionsDiv() {
+//   // Nuke the children in the Div:
+//   CONDITIONS_DIV.textContent = "";
 
-  // Fetch conditionsUI obj from conditions module:
-  const CONDITIONS_UI_OBJ = packageConditionsUI();
-}
+//   // Fetch conditionsUI obj from conditions module:
+//   const CONDITIONS_UI_OBJ = packageConditionsUI();
+// }
