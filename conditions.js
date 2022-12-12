@@ -13,14 +13,12 @@ import { currentUnit, wind, snoh, weather } from "./index.js";
 
 // Local globals:
 let descriptionToDisplay;
-// let rawWind;
 let windToDisplay;
-let precipitaionToDisplay;
+let precipitationToDisplay;
 
 export function setConditionsValues(response) {
   // Set description to display
   descriptionToDisplay = handleDescription(response);
-  console.log(descriptionToDisplay);
 
   // Set wind values
   let rawWind = response.list[0].wind.speed;
@@ -28,8 +26,8 @@ export function setConditionsValues(response) {
 
   // Set precipitation values
   let rawPrecipitation = response.list[0];
-  let precipitation = handlePrecipitation(rawPrecipitation);
-  precipitaionToDisplay = convertPrecipitation(precipitation);
+  let precipitation = handlePrecipitationType(rawPrecipitation);
+  precipitationToDisplay = convertPrecipitation(precipitation);
 }
 
 function convertWindSpeed(windInMPerS) {
@@ -43,7 +41,7 @@ function convertWindSpeed(windInMPerS) {
   return windToDisplay;
 }
 
-function handlePrecipitation(rawPrecipitation) {
+function handlePrecipitationType(rawPrecipitation) {
   if (rawPrecipitation.rain) {
     return rawPrecipitation.rain;
   }
@@ -69,9 +67,11 @@ function convertPrecipitation(precipitationInMM) {
 }
 
 function handleDescription(response) {
+  let rawDescription = response.list[0].weather[0].description;
+
   let descObj = {
     "feels like": response.list[0].main.feels_like,
-    description: response.list[0].weather[0].description,
+    description: rawDescription[0].toUpperCase() + rawDescription.substring(1),
     icon: response.list[0].weather[0].icon,
   };
 
@@ -80,8 +80,21 @@ function handleDescription(response) {
   return descObj;
 }
 
+function formatWindUnits() {
+  return currentUnit ? " meters/hr" : " miles/hr";
+}
+
+function formatPrecipitationUnits() {
+  return currentUnit ? " mm/hr" : " in/hr";
+}
+
 export function packageConditionsUI() {
   // Return object
-  const CONDITIONS_PKG = {};
-  // Conditions
+  const CONDITIONS_PKG = {
+    description: descriptionToDisplay,
+    precipitation: precipitationToDisplay + formatPrecipitationUnits(),
+    wind: windToDisplay + formatWindUnits(),
+  };
+
+  return CONDITIONS_PKG;
 }

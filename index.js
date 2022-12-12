@@ -25,9 +25,6 @@ export function delegateResponseData(response) {
   setTempValues(response);
 
   // Conditions
-  // snoh = handlePrecipitation(response);
-  // weather = response.list[0].weather;
-  // wind = response.list[0].wind;
   setConditionsValues(response);
 
   rebuildUI();

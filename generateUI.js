@@ -4,12 +4,13 @@ import { packageConditionsUI } from "./conditions.js";
 import { handleUnitChoice } from "./index.js";
 
 // Module globals:
+const CONTENT_DIV = document.getElementById("content");
 const TEMP_DIV = document.getElementById("temp-div");
 const CONDITIONS_DIV = document.getElementById("conditions-div");
 
 export default function rebuildUI() {
   rebuildTempDiv();
-  // rebuildConditionsDiv();
+  rebuildConditionsDiv();
 }
 
 function rebuildTempDiv() {
@@ -33,10 +34,26 @@ function rebuildTempDiv() {
   TEMP_DIV.appendChild(UNITS_BTN);
 }
 
-// function rebuildConditionsDiv() {
-//   // Nuke the children in the Div:
-//   CONDITIONS_DIV.textContent = "";
+function rebuildConditionsDiv() {
+  // Nuke the children in the Div:
+  CONDITIONS_DIV.textContent = "";
 
-//   // Fetch conditionsUI obj from conditions module:
-//   const CONDITIONS_UI_OBJ = packageConditionsUI();
-// }
+  // Fetch conditionsUI obj from conditions module:
+  const CONDITIONS_UI_OBJ = packageConditionsUI();
+
+  const DESCRIPTION_H4 = document.createElement("h4");
+  DESCRIPTION_H4.textContent = CONDITIONS_UI_OBJ.description.description;
+  CONDITIONS_DIV.appendChild(DESCRIPTION_H4);
+
+  const DESCRIPTION_ICON = document.createElement("img");
+  DESCRIPTION_ICON.src = CONDITIONS_UI_OBJ.description.iconURL;
+  CONDITIONS_DIV.appendChild(DESCRIPTION_ICON);
+
+  const PRECIPITATION_H5 = document.createElement("h5");
+  PRECIPITATION_H5.textContent = `Precipitation: ${CONDITIONS_UI_OBJ.precipitation}`;
+  CONDITIONS_DIV.appendChild(PRECIPITATION_H5);
+
+  const WIND_H5 = document.createElement("h5");
+  WIND_H5.textContent = `Wind speed: ${CONDITIONS_UI_OBJ.wind}`;
+  CONDITIONS_DIV.appendChild(WIND_H5);
+}

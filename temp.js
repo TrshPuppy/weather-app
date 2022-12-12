@@ -14,7 +14,7 @@ export function updateTempValues() {
   tempToDisplay = convertToCurrentTempUnit();
 }
 
-export function convertToCurrentTempUnit() {
+function convertToCurrentTempUnit() {
   let tempToDisplay;
 
   if (!currentUnit) {
@@ -40,7 +40,7 @@ export function packageTempUI() {
 }
 
 // Handle units on button
-export function setTempUnitToDisplay() {
+function setTempUnitToDisplay() {
   switch (currentUnit) {
     case 0:
       return "°F";
