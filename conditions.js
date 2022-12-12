@@ -12,24 +12,23 @@
 import { currentUnit, wind, snoh, weather } from "./index.js";
 
 // Local globals:
-let description;
-let windInMPerS;
+let descriptionToDisplay;
+// let rawWind;
 let windToDisplay;
 let precipitaionToDisplay;
 
 export function setConditionsValues(response) {
   // Set description to display
-  // handleDescription(weather);
+  descriptionToDisplay = handleDescription(response);
+  console.log(descriptionToDisplay);
 
   // Set wind values
-  windInMPerS = response.list[0].wind.speed;
-  windToDisplay = convertWindSpeed(windInMPerS);
+  let rawWind = response.list[0].wind.speed;
+  windToDisplay = convertWindSpeed(rawWind);
 
   // Set precipitation values
   let rawPrecipitation = response.list[0];
-
   let precipitation = handlePrecipitation(rawPrecipitation);
-
   precipitaionToDisplay = convertPrecipitation(precipitation);
 }
 
@@ -69,17 +68,16 @@ function convertPrecipitation(precipitationInMM) {
   return precipitationPerHR.toFixed(2);
 }
 
-function handleDescription(weather) {
-  const iconCode = weather[0].icon;
-
-  let iconURL = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
-
-  description = {
-    conditions: weather[0].description,
-    icon: iconURL,
-    precipitaion: snoh,
-    wind: windToDisplay,
+function handleDescription(response) {
+  let descObj = {
+    "feels like": response.list[0].main.feels_like,
+    description: response.list[0].weather[0].description,
+    icon: response.list[0].weather[0].icon,
   };
+
+  descObj.iconURL = `http://openweathermap.org/img/wn/${descObj.icon}@2x.png`;
+
+  return descObj;
 }
 
 export function packageConditionsUI() {

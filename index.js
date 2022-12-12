@@ -1,9 +1,6 @@
 // Imports
 import fetchDataFromAPI from "./api.js";
-import setTempValues, {
-  updateTempValues,
-  setTempUnitToDisplay,
-} from "./temp.js";
+import setTempValues, { updateTempValues } from "./temp.js";
 import { setConditionsValues } from "./conditions.js";
 import rebuildUI from "./generateUI.js";
 
