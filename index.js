@@ -4,12 +4,12 @@ import setTempValues, {
   updateTempValues,
   setTempUnitToDisplay,
 } from "./temp.js";
-import { handleConditions } from "./conditions.js";
+import { setConditionsValues } from "./conditions.js";
 import rebuildUI from "./generateUI.js";
 
 // Exports
 export let currentUnit = 0;
-export const possibleUnits = ["imperial", "metric"];
+export const possibleUnits = ["Imperial", "Metric"];
 
 // Data variables:
 export { wind, snoh, weather };
@@ -28,10 +28,10 @@ export function delegateResponseData(response) {
   setTempValues(response);
 
   // Conditions
-  snoh = handlePrecipitation(response);
-  weather = response.list[0].weather;
-  wind = response.list[0].wind;
-  // handleConditions();
+  // snoh = handlePrecipitation(response);
+  // weather = response.list[0].weather;
+  // wind = response.list[0].wind;
+  setConditionsValues(response);
 
   rebuildUI();
 }
@@ -40,16 +40,6 @@ export function handleUnitChoice() {
   currentUnit = currentUnit ^ 1;
   updateTempValues();
   rebuildUI();
-}
-
-function handlePrecipitation(response) {
-  if (response.list[0].main.rain) {
-    return response.list[0].main.rain;
-  }
-  if (response.list[0].main.snow) {
-    return response.list[0].main.snow;
-  }
-  return { "1hr": 0 };
 }
 
 // Event Listeners:

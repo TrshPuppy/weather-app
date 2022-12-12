@@ -13,23 +13,60 @@ import { currentUnit, wind, snoh, weather } from "./index.js";
 
 // Local globals:
 let description;
-let windSpeed;
+let windInMPerS;
+let windToDisplay;
+let precipitaionToDisplay;
 
-export function handleConditions() {
-  convertWindSpeed(wind);
-  handleDescription(weather);
+export function setConditionsValues(response) {
+  // Set description to display
+  // handleDescription(weather);
+
+  // Set wind values
+  windInMPerS = response.list[0].wind.speed;
+  windToDisplay = convertWindSpeed(windInMPerS);
+
+  // Set precipitation values
+  let rawPrecipitation = response.list[0];
+
+  let precipitation = handlePrecipitation(rawPrecipitation);
+
+  precipitaionToDisplay = convertPrecipitation(precipitation);
 }
 
-function convertWindSpeed(wind) {
-  windSpeed;
-  let windInMPerS = wind.speed;
-
+function convertWindSpeed(windInMPerS) {
   // Convert to metric/ imperial
   if (!currentUnit) {
-    windSpeed = Math.trunc((windInMPerS * 60 * 60) / (1000 * 1.61));
+    windToDisplay = Math.trunc((windInMPerS * 60 * 60) / (1000 * 1.61));
   } else {
-    windSpeed = Math.trunc((windInMPerS * 60 * 60) / 1000);
+    windToDisplay = Math.trunc((windInMPerS * 60 * 60) / 1000);
   }
+
+  return windToDisplay;
+}
+
+function handlePrecipitation(rawPrecipitation) {
+  if (rawPrecipitation.rain) {
+    return rawPrecipitation.rain;
+  }
+  if (rawPrecipitation.snow) {
+    return rawPrecipitation.snow;
+  }
+  return { "1hr": 0 };
+}
+
+function convertPrecipitation(precipitationInMM) {
+  let precipitationPerHR;
+
+  if (precipitationInMM["3h"]) {
+    precipitationPerHR = precipitationInMM["3h"] / 3;
+  } else {
+    precipitationPerHR = precipitationInMM["1h"];
+  }
+
+  if (!currentUnit) {
+    return (precipitationPerHR * 0.0393).toFixed(2);
+  }
+  return precipitationPerHR.toFixed(2);
 }
 
 function handleDescription(weather) {
@@ -41,7 +78,7 @@ function handleDescription(weather) {
     conditions: weather[0].description,
     icon: iconURL,
     precipitaion: snoh,
-    wind: windSpeed,
+    wind: windToDisplay,
   };
 }
 
