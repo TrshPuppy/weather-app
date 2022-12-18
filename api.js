@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import { delegateResponseData } from "./index.js";
 
 dotenv.config();
-console.log(process.env.TEST);
+
 // Module globals:
 let gloryHole; // city
 
