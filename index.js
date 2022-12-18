@@ -4,6 +4,9 @@ import setTempValues, { updateTempValues } from "./temp.js";
 import { setConditionsValues } from "./conditions.js";
 import rebuildUI from "./generateUI.js";
 
+// dotenv.config();
+// console.log(process.env.TEST);
+
 // Exports
 export let currentUnit = 0;
 export const possibleUnits = ["Imperial", "Metric"];

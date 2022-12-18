@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/TrshPuppy/weather-app#readme",
   "devDependencies": {
-    "parcel": "^2.8.0"
+    "parcel": "^2.8.2"
   },
   "dependencies": {
     "date-fns": "^2.29.3",
