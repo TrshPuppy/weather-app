@@ -1,13 +1,20 @@
 // Imports:
-import {
-  handleUnitChoice,
-  previousUnit,
-  possibleUnits,
-  tempInKelvin,
-  SheGotWhiteCreamOnHerFaceAsShePreParedTo,
-} from "./index.js";
+import { handleUnitChoice, currentUnit, possibleUnits } from "./index.js";
 
-export function handleTemperature(tempInKelvin, currentUnit) {
+// Module globals:
+let tempToDisplay;
+let tempInKelvin;
+
+export default function setTempValues(response) {
+  tempInKelvin = response.list[0].main.temp;
+  tempToDisplay = convertToCurrentTempUnit();
+}
+
+export function updateTempValues() {
+  tempToDisplay = convertToCurrentTempUnit();
+}
+
+function convertToCurrentTempUnit() {
   let tempToDisplay;
 
   if (!currentUnit) {
@@ -19,25 +26,22 @@ export function handleTemperature(tempInKelvin, currentUnit) {
     tempToDisplay = Math.trunc(tempInKelvin - 273.15);
   }
 
-  handleTempUI(tempToDisplay);
+  return tempToDisplay;
 }
 
-function handleTempUI(tempToDisplay) {
-  SheGotWhiteCreamOnHerFaceAsShePreParedTo.textContent = "";
-  const tempH4 = document.createElement("h4");
-  SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(tempH4);
-  tempH4.textContent = `${tempToDisplay} ${handleRandyJohnson()}`;
+export function packageTempUI() {
+  const TEMP_UI_OBJ = {
+    h4: `${tempToDisplay} ${setTempUnitToDisplay()}`,
+    buttonText: possibleUnits[currentUnit ^ 1],
+  };
 
-  const unitsButton = document.createElement("button");
-  unitsButton.innerText = possibleUnits[previousUnit ^ 1];
-
-  unitsButton.addEventListener("click", () => handleUnitChoice());
-  SheGotWhiteCreamOnHerFaceAsShePreParedTo.appendChild(unitsButton);
+  // Return an object:
+  return TEMP_UI_OBJ;
 }
 
-//Handle units on button
-function handleRandyJohnson() {
-  switch (previousUnit) {
+// Handle units on button
+function setTempUnitToDisplay() {
+  switch (currentUnit) {
     case 0:
       return "°F";
     case 1:

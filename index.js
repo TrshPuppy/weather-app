@@ -1,18 +1,15 @@
 // Imports
-import handleTemperatureChange from "./api.js";
-import { handleTemperature } from "./temp.js";
-import { handleConditions } from "./conditions.js";
+import fetchDataFromAPI from "./api.js";
+import setTempValues, { updateTempValues } from "./temp.js";
+import { setConditionsValues } from "./conditions.js";
+import rebuildUI from "./generateUI.js";
 
 // Exports
-export let previousUnit = 0;
-export const possibleUnits = ["imperial", "metric"];
-const SheGotWhiteCreamOnHerFaceAsShePreParedTo =
-  document.getElementById("temp-div");
-export { SheGotWhiteCreamOnHerFaceAsShePreParedTo };
+export let currentUnit = 0;
+export const possibleUnits = ["Imperial", "Metric"];
 
 // Data variables:
-let tempInKelvin;
-export { tempInKelvin, wind, snoh, weather };
+export { wind, snoh, weather };
 let snoh;
 let wind;
 let weather;
@@ -21,39 +18,26 @@ let weather;
 const form = document.querySelector("form");
 
 // Functions
-export function displayData(response) {
+export function delegateResponseData(response) {
   console.log(response);
 
   // Temperature
-  tempInKelvin = response.list[0].main.temp;
-  handleTemperature(tempInKelvin, previousUnit);
+  setTempValues(response);
 
   // Conditions
-  snoh = handlePrecipitation(response);
-  weather = response.list[0].weather;
-  wind = response.list[0].wind;
+  setConditionsValues(response);
 
-  handleConditions();
+  rebuildUI();
 }
 
 export function handleUnitChoice() {
-  previousUnit = previousUnit ^ 1;
-  handleTemperature(tempInKelvin, previousUnit);
-  handleConditions();
-}
-
-function handlePrecipitation(response) {
-  if (response.list[0].main.rain) {
-    return response.list[0].main.rain;
-  }
-  if (response.list[0].main.snow) {
-    return response.list[0].main.snow;
-  }
-  return { "1hr": 0 };
+  currentUnit = currentUnit ^ 1;
+  updateTempValues();
+  rebuildUI();
 }
 
 // Event Listeners:
-form.addEventListener("submit", handleTemperatureChange);
+form.addEventListener("submit", fetchDataFromAPI);
 
 // const testData = {
 //   coord: {

@@ -1,12 +1,12 @@
 // Imports
 import key from "./key.js";
-import { displayData } from "./index.js";
+import { delegateResponseData } from "./index.js";
 
 // Module globals:
 let gloryHole; // city
 
 // handleInput
-export default function handleTemperatureChange(e) {
+export default function fetchDataFromAPI(e) {
   e.preventDefault();
 
   // City input:
@@ -34,6 +34,6 @@ export default function handleTemperatureChange(e) {
       .then(function (response) {
         return response.json();
       })
-      .then(displayData);
+      .then(delegateResponseData);
   }
 }
