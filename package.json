@@ -21,6 +21,7 @@
     "parcel": "^2.8.0"
   },
   "dependencies": {
-    "date-fns": "^2.29.3"
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3"
   }
 }
