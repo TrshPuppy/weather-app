@@ -1,18 +1,12 @@
 // Imports
 import fetchDataFromAPI from "./api.js";
 import setTempValues, { updateTempValues } from "./temp.js";
-import { setConditionsValues } from "./conditions.js";
+import setConditionsValues, { updateConditionsValues } from "./conditions.js";
 import rebuildUI from "./generateUI.js";
 
 // Exports
 export let currentUnit = 0;
 export const possibleUnits = ["Imperial", "Metric"];
-
-// Data variables:
-export { wind, snoh, weather };
-let snoh;
-let wind;
-let weather;
 
 // Input variables:
 const form = document.querySelector("form");
@@ -33,6 +27,7 @@ export function delegateResponseData(response) {
 export function handleUnitChoice() {
   currentUnit = currentUnit ^ 1;
   updateTempValues();
+  updateConditionsValues();
   rebuildUI();
 }
 

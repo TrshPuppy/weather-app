@@ -9,39 +9,48 @@
 */
 
 // Imports
-import { currentUnit, wind, snoh, weather } from "./index.js";
+import { currentUnit } from "./index.js";
 
 // Local globals:
+let rawWind;
+let rawPrecipitation;
 let descriptionToDisplay;
 let windToDisplay;
 let precipitationToDisplay;
 
-export function setConditionsValues(response) {
+export default function setConditionsValues(response) {
   // Set description to display
   descriptionToDisplay = handleDescription(response);
 
   // Set wind values
-  let rawWind = response.list[0].wind.speed;
+  rawWind = response.list[0].wind.speed;
   windToDisplay = convertWindSpeed(rawWind);
 
   // Set precipitation values
-  let rawPrecipitation = response.list[0];
-  let precipitation = handlePrecipitationType(rawPrecipitation);
+  rawPrecipitation = response.list[0];
+  let precipitation = handlePrecipitationType();
   precipitationToDisplay = convertPrecipitation(precipitation);
 }
 
-function convertWindSpeed(windInMPerS) {
+export function updateConditionsValues() {
+  windToDisplay = convertWindSpeed();
+
+  let precipitation = handlePrecipitationType();
+  precipitationToDisplay = convertPrecipitation(precipitation);
+}
+
+function convertWindSpeed(rawWind) {
   // Convert to metric/ imperial
   if (!currentUnit) {
-    windToDisplay = Math.trunc((windInMPerS * 60 * 60) / (1000 * 1.61));
+    windToDisplay = Math.trunc((rawWind * 60 * 60) / (1000 * 1.61));
   } else {
-    windToDisplay = Math.trunc((windInMPerS * 60 * 60) / 1000);
+    windToDisplay = Math.trunc((rawWind * 60 * 60) / 1000);
   }
 
   return windToDisplay;
 }
 
-function handlePrecipitationType(rawPrecipitation) {
+function handlePrecipitationType() {
   if (rawPrecipitation.rain) {
     return rawPrecipitation.rain;
   }
@@ -80,20 +89,12 @@ function handleDescription(response) {
   return descObj;
 }
 
-function formatWindUnits() {
-  return currentUnit ? " meters/hr" : " miles/hr";
-}
-
-function formatPrecipitationUnits() {
-  return currentUnit ? " mm/hr" : " in/hr";
-}
-
 export function packageConditionsUI() {
   // Return object
   const CONDITIONS_PKG = {
     description: descriptionToDisplay,
-    precipitation: precipitationToDisplay + formatPrecipitationUnits(),
-    wind: windToDisplay + formatWindUnits(),
+    precipitation: precipitationToDisplay + (currentUnit ? " mm/hr" : " in/hr"),
+    wind: windToDisplay + (currentUnit ? " meters/hr" : " miles/hr"),
   };
 
   return CONDITIONS_PKG;
