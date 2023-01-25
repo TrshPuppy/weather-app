@@ -12,7 +12,6 @@ package-lock.json
 #ignore parcel cache
 ../.parcel-cache/
 
-
 # node_modules/
 /target/
 # .DS_Store
