@@ -1,13 +1,3 @@
-/*
- precipition
- clouds
- wind
-
-
-
-
-*/
-
 // Imports
 import { currentUnit } from "./index.js";
 
