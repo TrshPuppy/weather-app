@@ -1,6 +1,9 @@
 // Imports
-import key from "./key.js";
+import * as dotenv from "dotenv";
+// import key from "./key.js";
 import { delegateResponseData } from "./index.js";
+
+dotenv.config();
 
 // Module globals:
 let gloryHole; // city
@@ -13,7 +16,7 @@ export default function fetchDataFromAPI(e) {
   gloryHole = e.target.querySelector("input").value;
 
   // Build coordinate request URL:
-  const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${key}&units=standard}`;
+  const coordsRequestURL = `https://api.openweathermap.org/data/2.5/weather?q=${gloryHole}&APPID=${process.env.KEY}&units=standard}`;
 
   fetch(coordsRequestURL, { mode: "cors" })
     .then(function (response) {
@@ -28,7 +31,7 @@ export default function fetchDataFromAPI(e) {
     };
 
     // Build data request URL:
-    const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${key}`;
+    const dataRequestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${requestCoordinates.lattitude}&lon=${requestCoordinates.longitude}&appid=${process.env.KEY}`;
 
     fetch(dataRequestURL)
       .then(function (response) {

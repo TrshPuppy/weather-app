@@ -1,6 +1,7 @@
 key.js
 node_modules
 package-lock.json
+.env
 
 #ignore intellij project
 .idea
