@@ -1,5 +1,6 @@
 key.js
 node_modules
+package-lock.json
 
 #ignore intellij project
 .idea
